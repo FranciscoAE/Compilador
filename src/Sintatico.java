@@ -33,7 +33,8 @@ public class Sintatico {
             {"Se espera el uso de una coma: , ",                                                               "18"},
             {"Se esperaba la palabra reservada: new ",                                                  "19"},
             {"Se espera un identificador(id) o una cadena ",                                           "20"},
-            {"Se esperaba un valor de asignación:",                                                        "21"}
+            {"Se esperaba un valor de asignación:",                                                        "21"},
+            {"La variable NO esta declarada      ",                                                        "22"}
         }; 
           
           public void pawn()
@@ -122,6 +123,7 @@ public class Sintatico {
             if(p != null && (p.getToken() == 100)) {
                 Id = p.getLexema();
                 Linea = String.valueOf(p.getRenglon());
+                ValidarIgualdad(a);
                 TablaSimbolos R = new TablaSimbolos(TipoDato, Id, Linea);
                 a.add(R);
                 p = p.getUnion();
@@ -163,8 +165,9 @@ public class Sintatico {
                 p = p.getUnion();
                 if(p != null &&(p.getToken() == 100))
                 {
-                     Id = p.getLexema();
+                    Id = p.getLexema();
                     Linea = String.valueOf(p.getRenglon());
+                    ValidarIgualdad(a);
                     TablaSimbolos R = new TablaSimbolos(TipoDato, Id, Linea);
                     a.add(R);
                     p = p.getUnion();
@@ -315,6 +318,7 @@ public class Sintatico {
                     p = p.getUnion();
                     if(p != null &&(p.getToken()==100 || p.getToken() == 122))
                     {
+                        ValidarExistencia(a);
                         p = p.getUnion();
                             if(p != null &&(p.getToken() == 124))
                             {
@@ -433,6 +437,7 @@ public class Sintatico {
                 p = p.getUnion();
                 if(p != null &&(p.getToken() == 100 || p.getToken() == 122))
                 {
+                    ValidarExistencia(a);
                     p = p.getUnion();
                     if(p != null &&(p.getToken() == 124))
                     {
@@ -511,8 +516,9 @@ public class Sintatico {
          switch(p.getToken())
          {
              case 100:
-                 p = p.getUnion();
-                 break;
+                ValidarExistencia(a);
+                p = p.getUnion();
+                break;
               case 101:
                   p = p.getUnion();
                  break;
@@ -650,6 +656,33 @@ public class Sintatico {
                         System.out.println("El error es:  " + Error[0] );
                     }
                 }
+            }
+        }
+
+        public void ValidarExistencia(ArrayList<TablaSimbolos> a)
+        {
+            for(TablaSimbolos b : a)
+            {
+                if(p.getLexema().equals(b.getId()))
+                {
+                    return;
+                }
+            }
+            throw new TerminacionMetodoException("No existe la variable"); 
+
+        }
+
+        public void ValidarIgualdad(ArrayList<TablaSimbolos> a)
+        {
+            
+            for(TablaSimbolos  b : a)
+            {
+                if(p.getLexema().equals(b.getId()))
+                {
+                    ImprimirError(22);
+                    throw new TerminacionMetodoException("Se repite una variable"); 
+                }
+                    
             }
         }
 

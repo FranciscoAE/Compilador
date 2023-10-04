@@ -270,6 +270,10 @@ public class Forma extends javax.swing.JFrame{
         FileWriter fw = new FileWriter(selectedFile.getAbsoluteFile(), true);
         jTextArea1.write(fw);
         jTextArea2.setText("");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
     }
 
 
