@@ -5,8 +5,10 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.ArrayList;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Forma extends javax.swing.JFrame{
@@ -111,6 +113,8 @@ public class Forma extends javax.swing.JFrame{
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.getTableHeader().setBackground(new java.awt.Color(102, 102, 102));
         jTable1.getTableHeader().setForeground(new java.awt.Color(255, 255, 255));;
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
         jScrollPane3.getViewport().setBackground(new java.awt.Color(51, 51, 51));
         jScrollPane3.setViewportView(jTable1);
 
@@ -144,6 +148,8 @@ public class Forma extends javax.swing.JFrame{
         jTable2.getTableHeader().setReorderingAllowed(false);
         jTable2.getTableHeader().setBackground(new java.awt.Color(102, 102, 102));
         jTable2.getTableHeader().setForeground(new java.awt.Color(255, 255, 255));;
+        model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
         jScrollPane4.getViewport().setBackground(new java.awt.Color(51, 51, 51));
         jScrollPane4.setViewportView(jTable2);
 
@@ -220,9 +226,6 @@ public class Forma extends javax.swing.JFrame{
         pack();
     }
 
-
-    
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser fileChooser = new JFileChooser();
         int resultado = fileChooser.showOpenDialog(this);
@@ -233,6 +236,10 @@ public class Forma extends javax.swing.JFrame{
             try {
                 String content = new String(Files.readAllBytes(selectedFile.toPath()));
                 jTextArea1.setText(content);
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                model = (DefaultTableModel) jTable2.getModel();
+                model.setRowCount(0);
             } 
             catch (IOException e) {
                 e.printStackTrace();
@@ -245,6 +252,7 @@ public class Forma extends javax.swing.JFrame{
         jTextArea2.setText("");
         System.out.println("Comienzo de Analizador Lexico\n");
         lecture.Lectura();
+        NodoTabla(lecture.Inicio);
         System.out.println("*----------------------------------------");
         System.out.println("Analizador Lexico  terminado");
         System.out.println("*----------------------------------------\n*");
@@ -252,6 +260,7 @@ public class Forma extends javax.swing.JFrame{
         System.out.println("*----------------------------------------*");
         Sintatico St = new Sintatico(lecture.Inicio);
         St.pawn();
+        NodoTabla(St.a);
     }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) throws IOException {
@@ -263,6 +272,27 @@ public class Forma extends javax.swing.JFrame{
         jTextArea2.setText("");
     }
 
+
+
+    private void NodoTabla(Nodo a){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        while(a != null)
+        {
+            model.addRow(new Object[]{a.getToken(), a.getLexema(), a.getRenglon()});
+            a = a.getUnion();
+        }
+    }
+
+    private void NodoTabla(ArrayList<TablaSimbolos> a){
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        for(TablaSimbolos  b : a)
+        {
+            model.addRow(new Object[]{b.getDato(), b.getId(), b.getRenglon()});
+
+        }
+    }
+
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
