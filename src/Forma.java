@@ -221,6 +221,8 @@ public class Forma extends javax.swing.JFrame{
                     .addComponent(jButton3)
                     .addComponent(jLabel1))
                 .addContainerGap(20, Short.MAX_VALUE))
+
+                
         );
 
         pack();
@@ -305,6 +307,7 @@ public class Forma extends javax.swing.JFrame{
         });
     }
 
+    
     public class CustomOutputStream extends OutputStream {
     private JTextArea textArea;
 
@@ -318,8 +321,8 @@ public class Forma extends javax.swing.JFrame{
         textArea.append(String.valueOf((char) b));
         // Mueve el cursor del JTextArea al final
         textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
     }
-}
 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -335,3 +338,4 @@ public class Forma extends javax.swing.JFrame{
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
 }
+

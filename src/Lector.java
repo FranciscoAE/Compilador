@@ -80,6 +80,7 @@ public class Lector {
           
         public void Lectura(){
         Inicio = null;
+        Renglon = 1;
            try{
                Lector = new FileReader(archivo);
                buffer = new BufferedReader(Lector);

@@ -34,7 +34,8 @@ public class Sintatico {
             {"Se esperaba la palabra reservada: new ",                                                  "19"},
             {"Se espera un identificador(id) o una cadena ",                                           "20"},
             {"Se esperaba un valor de asignación:",                                                        "21"},
-            {"La variable NO esta declarada      ",                                                        "22"}
+            {"La variable NO esta declarada      ",                                                        "22"},
+            {"La variable YA esta declarada      ",                                                        "23"}
         }; 
           
           public void pawn()
@@ -81,7 +82,7 @@ public class Sintatico {
                                       }
                                       else
                                       {
-                                          ImprimirError(5);
+                                          ImprimirError(19);
                                          throw new TerminacionMetodoException("");
                                       }
                                 }
@@ -378,6 +379,7 @@ public class Sintatico {
                 break;
                 //Asignación de variable
             case 100:
+                ValidarExistencia(a);
                 p = p.getUnion();
                 if(p != null &&(p.getToken() ==  123))
                 {
@@ -668,6 +670,7 @@ public class Sintatico {
                     return;
                 }
             }
+            ImprimirError(22);
             throw new TerminacionMetodoException("No existe la variable"); 
 
         }
@@ -679,7 +682,7 @@ public class Sintatico {
             {
                 if(p.getLexema().equals(b.getId()))
                 {
-                    ImprimirError(22);
+                    ImprimirError(23);
                     throw new TerminacionMetodoException("Se repite una variable"); 
                 }
                     
