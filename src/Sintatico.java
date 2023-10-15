@@ -1,14 +1,23 @@
 import java.util.ArrayList;
 
 public class Sintatico {
-     String TipoDato, Linea, Id;
+
+        //Sintactico
         Nodo p;
+        Frame fr;
+         
+        //Para semantico
+        String TipoDato, Linea, Id;
+        int token;
         ArrayList<TablaSimbolos>  a = new ArrayList<TablaSimbolos>();
+        ArrayList<Nodo> n = new ArrayList<Nodo>();
+        TablaSimbolos R;
         
         //Constructor
-        public Sintatico(Nodo nodo)
+        public Sintatico(Nodo nodo, Frame Fr)
         {
             p = nodo;
+            fr = Fr;
         }
         
           String[][] Errores =
@@ -54,7 +63,7 @@ public class Sintatico {
                             if(p != null &&(p.getToken() == 119))
                             {
                                 p = p.getUnion();
-                               while(p != null && (p.getToken() == 207))
+                                while(p != null && (p.getToken() == 207))
                                     {
                                         variable();
                                     }
@@ -71,6 +80,7 @@ public class Sintatico {
                                     else
                                     {
                                         ImprimirError(5);
+                                        ErrorSintatico();
                                         throw new TerminacionMetodoException("");
                                     }
                                 }
@@ -82,7 +92,8 @@ public class Sintatico {
                                       }
                                       else
                                       {
-                                          ImprimirError(19);
+                                         ImprimirError(19);
+                                         ErrorSintatico();
                                          throw new TerminacionMetodoException("");
                                       }
                                 }
@@ -90,30 +101,34 @@ public class Sintatico {
                             else
                             {
                                 ImprimirError(4);
+                                ErrorSintatico();
                                 throw new TerminacionMetodoException("");
                             }
                         }
                         else
                         {
                             ImprimirError(3);
+                            ErrorSintatico();
                             throw new TerminacionMetodoException("");
                         }
                     }
                     else
                     {
                         ImprimirError(2);
+                        ErrorSintatico();
                         throw new TerminacionMetodoException("");
                     }
                 }
                 else
                 {
                 ImprimirError(1);
+                ErrorSintatico();
                 throw new TerminacionMetodoException("");
                 }
             }
             System.out.println("Analizador Sintatico Terminado.");
            for (TablaSimbolos  b :  a) {
-                System.out.println(b.getDato() + " " + b.getId() + " " + b.getRenglon());
+                System.out.println(b.getDato() + " " + b.getId() + " " + b.getRenglon() + " " + b.getToken());
            }
         }
 
@@ -125,7 +140,7 @@ public class Sintatico {
                 Id = p.getLexema();
                 Linea = String.valueOf(p.getRenglon());
                 ValidarIgualdad(a);
-                TablaSimbolos R = new TablaSimbolos(TipoDato, Id, Linea);
+                R = new TablaSimbolos(TipoDato,token, Id, Linea);
                 a.add(R);
                 p = p.getUnion();
                 if(p != null && (p.getToken() == 124)){
@@ -135,6 +150,7 @@ public class Sintatico {
                     }
                     else{
                         ImprimirError(8);
+                        ErrorSintatico();
                         throw new TerminacionMetodoException("");
                     }
                 }
@@ -144,17 +160,20 @@ public class Sintatico {
                     }
                     else{
                         ImprimirError(8);
+                        ErrorSintatico();
                         throw new TerminacionMetodoException("");
                     }
                 }
             }
             else {
                 ImprimirError(6);
+                ErrorSintatico();
                 throw new TerminacionMetodoException("");
             }
         }
         else {
             ImprimirError(19);
+            ErrorSintatico();
            throw new TerminacionMetodoException("");
         }
     }
@@ -169,7 +188,7 @@ public class Sintatico {
                     Id = p.getLexema();
                     Linea = String.valueOf(p.getRenglon());
                     ValidarIgualdad(a);
-                    TablaSimbolos R = new TablaSimbolos(TipoDato, Id, Linea);
+                    TablaSimbolos R = new TablaSimbolos(TipoDato,token, Id, Linea);
                     a.add(R);
                     p = p.getUnion();
                     if(p != null &&(p.getToken() == 124))
@@ -181,12 +200,14 @@ public class Sintatico {
                 else
                 {
                     ImprimirError(6);
+                    ErrorSintatico();
                     throw new TerminacionMetodoException("");
                 }
             }
             else
             {
                 ImprimirError(18);
+                ErrorSintatico();
                 throw new TerminacionMetodoException("");
             }
         }
@@ -200,9 +221,11 @@ public class Sintatico {
                 if(p != null &&(p.getToken() == 117))
                 {
                     p = p.getUnion();
+                    Arbol arb = new Arbol(a,p,fr);
                     exp_Cond();
                     if(p != null &&(p.getToken() == 118))
                     {
+                        arb.crearComparacion();
                         p = p.getUnion();
                         if(p != null &&(p.getToken() == 119))
                         {
@@ -231,12 +254,14 @@ public class Sintatico {
                                         else
                                         {
                                             ImprimirError(5);
+                                            ErrorSintatico();
                                             throw new TerminacionMetodoException("");
                                         }
                                     }
                                     else
                                     {
-                                       ImprimirError(4);
+                                      ImprimirError(4);
+                                      ErrorSintatico();
                                       throw new TerminacionMetodoException("");
                                     }
                                 }
@@ -245,25 +270,29 @@ public class Sintatico {
                             else
                             {
                                 ImprimirError(5);
-                               throw new TerminacionMetodoException("");
+                                ErrorSintatico();
+                                throw new TerminacionMetodoException("");
                             }
                         }
                         else
                         {
                             ImprimirError(4);
+                            ErrorSintatico();
                             throw new TerminacionMetodoException("");
                         }
                     }
                     else
                     {
                         ImprimirError(3);
+                        ErrorSintatico();
                         throw new TerminacionMetodoException("");
                     }
                 }
                 else
                 {
                         ImprimirError(2);
-                       throw new TerminacionMetodoException("");
+                        ErrorSintatico();
+                        throw new TerminacionMetodoException("");
                 }
                 break;
             case 204:
@@ -272,9 +301,11 @@ public class Sintatico {
                 if(p != null &&(p.getToken() == 117))
                 {
                     p = p.getUnion();
+                    Arbol arb = new Arbol(a,p,fr);
                     exp_Cond();
                     if(p != null &&(p.getToken() == 118))
                     {
+                        arb.crearComparacion();
                         p = p.getUnion();
                         if(p != null &&(p.getToken() == 119))
                         {
@@ -290,24 +321,28 @@ public class Sintatico {
                             else
                             {
                                  ImprimirError(5);
+                                 ErrorSintatico();
                                  throw new TerminacionMetodoException("");
                             }
                         }
                         else
                         {
                             ImprimirError(4);
-                           throw new TerminacionMetodoException("");
+                            ErrorSintatico();
+                            throw new TerminacionMetodoException("");
                         }
                     }
                     else
                     {
                          ImprimirError(3);
+                         ErrorSintatico();
                          throw new TerminacionMetodoException("");
                     }
                 }
                 else
                 {
                     ImprimirError(2);
+                    ErrorSintatico();
                     throw new TerminacionMetodoException("");
                 }
                 break;
@@ -334,12 +369,14 @@ public class Sintatico {
                                    else
                                    {
                                        ImprimirError(8);
+                                       ErrorSintatico();
                                        throw new TerminacionMetodoException("");
                                    }
                                 }
                                 else
                                 {
                                     ImprimirError(3);
+                                    ErrorSintatico();
                                     throw new TerminacionMetodoException("");
                                 }
                             }
@@ -355,31 +392,36 @@ public class Sintatico {
                                     else
                                     {
                                         ImprimirError(8);
+                                        ErrorSintatico();
                                         throw new TerminacionMetodoException("");
                                     }
                                 }
                                 else
                                 {
                                     ImprimirError(3);
-                                   throw new TerminacionMetodoException("");
+                                    ErrorSintatico();
+                                    throw new TerminacionMetodoException("");
                                 }
                             }
                     }
                     else
                     {
                         ImprimirError(6);
+                        ErrorSintatico();
                         throw new TerminacionMetodoException("");
                     }
                 }
                 else
                 {
                     ImprimirError(2);
+                    ErrorSintatico();
                     throw new TerminacionMetodoException("");
                 }
                 break;
                 //Asignación de variable
             case 100:
                 ValidarExistencia(a);
+                Arbol arb = new Arbol(a,p,fr);
                 p = p.getUnion();
                 if(p != null &&(p.getToken() ==  123))
                 {
@@ -398,13 +440,15 @@ public class Sintatico {
                              else
                              {
                                  ImprimirError(3);
-                                  throw new TerminacionMetodoException("");
+                                 ErrorSintatico();
+                                 throw new TerminacionMetodoException("");
                              }
                          }
                          else
                          {
-                             ImprimirError(2);
-                               throw new TerminacionMetodoException("");
+                            ImprimirError(2);
+                            ErrorSintatico();
+                            throw new TerminacionMetodoException("");
                          }
                     }
                     else
@@ -413,18 +457,22 @@ public class Sintatico {
                     }
                     if(p != null &&(p.getToken() == 125))
                     {
+                        //Aqui ira lo de Arbol
+                        arb.crearAsignación();
                         p = p.getUnion();
                     }
                     else
                     {
-                         ImprimirError(8);
+                        ImprimirError(8);
+                        ErrorSintatico();
                         throw new TerminacionMetodoException("");
                     }
                 }
                 else
                 {
                     ImprimirError(11);
-                   throw new TerminacionMetodoException("");
+                    ErrorSintatico();
+                    throw new TerminacionMetodoException("");
                 }
                 break;
             default:
@@ -450,13 +498,15 @@ public class Sintatico {
                 else
                 {
                     ImprimirError(20);
-                   throw new TerminacionMetodoException("");
+                    ErrorSintatico();
+                    throw new TerminacionMetodoException("");
                 }
             }
             else
             {
                 ImprimirError(18);
-              throw new TerminacionMetodoException("");
+                ErrorSintatico();
+                throw new TerminacionMetodoException("");
             }
         }
     
@@ -466,27 +516,34 @@ public class Sintatico {
             {
                 case 208:
                     TipoDato = (p.getLexema());
+                    token = (p.getToken());
                     p = p.getUnion();
                      break;
                 case 209:
                     TipoDato = (p.getLexema());
+                    token = (p.getToken());
                     p = p.getUnion();
                     break;
                 case 212:
                     TipoDato = (p.getLexema());
+                    token = (p.getToken());
                     p = p.getUnion();
                     break;
                 case 213:
                     TipoDato = (p.getLexema());
+                    token = (p.getToken());
                     p = p.getUnion();
                     break;
                 default:
                     ImprimirError(9);
+                    ErrorSintatico();
                     throw new TerminacionMetodoException("");
             }
         }
     public void exp_Cond() 
         {
+            //aqui comienza
+            Arbol arb = new Arbol(a,p,fr);
             exp_simp();
             exp_relac();
             exp_simp();
@@ -558,12 +615,14 @@ public class Sintatico {
                    else
                    {
                        ImprimirError(3);
-                      throw new TerminacionMetodoException("");
+                       ErrorSintatico();
+                       throw new TerminacionMetodoException("");
                    }
                   break;
-              default:
-                  ImprimirError(21);
-                   throw new TerminacionMetodoException("");
+                default:
+                    ImprimirError(21);
+                    ErrorSintatico();
+                    throw new TerminacionMetodoException("");
          }
      }
     
@@ -592,8 +651,9 @@ public class Sintatico {
                p = p.getUnion();
                break;
            default:
-              ImprimirError(15);
-             throw new TerminacionMetodoException("");
+                ImprimirError(15);
+                ErrorSintatico();
+                throw new TerminacionMetodoException("");
        }
        
        }
@@ -608,7 +668,8 @@ public class Sintatico {
             else
             {
                 ImprimirError(14);
-               throw new TerminacionMetodoException("");
+                ErrorSintatico();
+                throw new TerminacionMetodoException("");
             }
         }
    
@@ -621,6 +682,7 @@ public class Sintatico {
             else
             {
                ImprimirError(13);
+               ErrorSintatico();
                throw new TerminacionMetodoException("");
             }
         }
@@ -637,7 +699,8 @@ public class Sintatico {
            else
           {
               ImprimirError(12);
-             throw new TerminacionMetodoException("");
+              ErrorSintatico();
+              throw new TerminacionMetodoException("");
           }
       }
         
@@ -671,9 +734,11 @@ public class Sintatico {
                 }
             }
             ImprimirError(22);
-            throw new TerminacionMetodoException("No existe la variable"); 
+            ErrorSintatico();
+            throw new TerminacionMetodoException(""); 
 
         }
+
 
         public void ValidarIgualdad(ArrayList<TablaSimbolos> a)
         {
@@ -683,12 +748,18 @@ public class Sintatico {
                 if(p.getLexema().equals(b.getId()))
                 {
                     ImprimirError(23);
-                    throw new TerminacionMetodoException("Se repite una variable"); 
+                    throw new TerminacionMetodoException(""); 
                 }
                     
             }
         }
 
+        public void ErrorSintatico(){
+            fr.getLabelSin().setForeground(new java.awt.Color(247, 36, 36));
+            fr.getLabelSin().setText("----X----");;
+            fr.getLabelSem().setForeground(new java.awt.Color(53, 97, 240));
+            fr.getLabelSem().setText("----?----");
+        }
 
 }
 

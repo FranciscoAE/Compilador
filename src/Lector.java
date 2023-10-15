@@ -65,6 +65,7 @@ public class Lector {
        String lexema="";
        boolean band = false;
        
+       
        //Archivo a leer
        private File archivo = null;
 
@@ -78,7 +79,8 @@ public class Lector {
  
          
           
-        public void Lectura(){
+        public boolean Lectura(){
+        band = false;
         Inicio = null;
         Renglon = 1;
            try{
@@ -279,6 +281,7 @@ public class Lector {
            {
                System.out.println(e.getMessage());
            }
+           return band;
        }
          
          public void PalabraReservada(){

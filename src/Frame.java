@@ -277,6 +277,12 @@ public class Frame extends javax.swing.JFrame{
         }
         TxtCodigo.setText("");
         TxtMensaje.setText(""); 
+        labEstatusLexicoR.setForeground(new java.awt.Color(0, 0, 0));
+        labEstatusLexicoR.setText("---------");
+        labEstatusSemR.setForeground(new java.awt.Color(0, 0, 0));
+        labEstatusSemR.setText("---------");
+        labEstatusSinR.setForeground(new java.awt.Color(0, 0, 0));
+        labEstatusSinR.setText("---------");
         JFileChooser fileChooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("Archivos de Texto (.txt)", "txt");
         fileChooser.setFileFilter(filter);
@@ -293,6 +299,7 @@ public class Frame extends javax.swing.JFrame{
                         if (confirmResult == JOptionPane.NO_OPTION) {
                             return;
                         }
+                        selectedFile = fileChooser.getSelectedFile();
                     }
 
                     FileWriter fileWriter = new FileWriter(selectedFile, false);
@@ -349,17 +356,29 @@ public class Frame extends javax.swing.JFrame{
     private void btnCompilarActionPerformed(java.awt.event.ActionEvent evt) {                                            
         TxtMensaje.setText("");
         System.out.println("Comienzo de Analizador Lexico\n");
-        lecture.Lectura();
+        boolean band = lecture.Lectura();
+        if(band){
+            labEstatusLexicoR.setForeground(new java.awt.Color(247, 36, 36));
+            labEstatusLexicoR.setText("----X----");
+        }
+        else{
+            labEstatusLexicoR.setForeground(new java.awt.Color(122, 240, 53));
+            labEstatusLexicoR.setText("----O----");
+        }
         System.out.println("Analizador Lexico  terminado");
         System.out.println("*----------------------------------------\n*");
         System.out.println("Comienzo de analisis Sintatico");
         System.out.println("*----------------------------------------*");
-        Sintatico St = new Sintatico(lecture.Inicio);
+        Sintatico St = new Sintatico(lecture.Inicio,this);
         St.pawn();
+        labEstatusSinR.setForeground(new java.awt.Color(122, 240, 53));
+        labEstatusSinR.setText("----O----");
+        labEstatusSemR.setForeground(new java.awt.Color(122, 240, 53));
+        labEstatusSemR.setText("----O----");
     }                                           
 
     private void btnEjecutarActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
+        
     }                                           
 
     /**
@@ -399,6 +418,15 @@ public class Frame extends javax.swing.JFrame{
             }
         }
 
+        public JLabel getLabelSin() {
+            return labEstatusSinR;
+        }
+
+        public JLabel getLabelSem() {
+            return labEstatusSemR;
+        }
+
+        
     // Variables declaration - do not modify                     
     private javax.swing.JButton BtnNuevo;
     private javax.swing.JTextArea TxtCodigo;

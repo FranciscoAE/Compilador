@@ -1,13 +1,22 @@
+import java.util.ArrayList;
+    
 public class TablaSimbolos {
+
+    private int Token;
     private String TipoDato;
     private String Id;
     private String Renglon;
-    private TablaSimbolos Nexo;
+
+    //No importan mucho
+    private Object valor;
+
+
         
         
-    public TablaSimbolos(String tipoDato, String id, String renglon)
+    public TablaSimbolos(String tipoDato,int token, String id, String renglon)
     {
         this.TipoDato = tipoDato;
+        this.Token = token;
         this.Id= id;
         this.Renglon = renglon;
     }
@@ -18,7 +27,7 @@ public class TablaSimbolos {
     }
     
      //Encapsulamiento
-    protected String  getDato()
+    protected String getDato()
     {
         return TipoDato;
     }
@@ -26,6 +35,16 @@ public class TablaSimbolos {
     protected void setDato(String a)
     {
         this.TipoDato  = a;
+    }
+
+    protected int getToken()
+    {
+        return Token;
+    }
+    
+    protected void setToken(int a)
+    {
+        this.Token  = a;
     }
     
     protected String getId()
@@ -48,13 +67,59 @@ public class TablaSimbolos {
         this.Renglon = a;
     }
     
-    protected TablaSimbolos getNexo()
-    {
-        return Nexo;
+    public Object getValor() {
+        return valor;
     }
-   
-    protected void setUnion (TablaSimbolos a)
-    {
-        this.Nexo = a;
+
+    public void setValor(Object a) {
+        this.valor = a;
     }
+
+    //metodos
+
+
+class vString extends TablaSimbolos {
+    public vString() {
+        // Constructor sin argumentos
+    }
+
+    @Override
+    public String getValor() {
+        return (String) super.getValor();
+    }
+}
+
+class vInt extends TablaSimbolos {
+    public vInt() {
+        // Constructor sin argumentos
+    }
+
+    @Override
+    public Object getValor() {
+        return (int) super.getValor();
+    }
+}
+
+class vFloat extends TablaSimbolos {
+    public vFloat() {
+        // Constructor sin argumentos
+    }
+
+    @Override
+    public Object getValor() {
+        return (float) super.getValor();
+    }
+}
+
+class vBool extends TablaSimbolos {
+    public vBool() {
+        // Constructor sin argumentos
+    }
+
+    @Override
+    public Object getValor() {
+        return (boolean) super.getValor();
+    }
+}
+
 }
