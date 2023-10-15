@@ -543,7 +543,6 @@ public class Sintatico {
     public void exp_Cond() 
         {
             //aqui comienza
-            Arbol arb = new Arbol(a,p,fr);
             exp_simp();
             exp_relac();
             exp_simp();
