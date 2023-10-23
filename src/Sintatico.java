@@ -458,7 +458,8 @@ public class Sintatico {
                     if(p != null &&(p.getToken() == 125))
                     {
                         //Aqui ira lo de Arbol
-                        arb.crearAsignación();
+
+                        arb.crearAsignacion();
                         p = p.getUnion();
                     }
                     else

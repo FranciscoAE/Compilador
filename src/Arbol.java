@@ -7,7 +7,7 @@ public class Arbol {
     
     protected ArrayList<TablaSimbolos> r = new ArrayList<TablaSimbolos>();
     protected Nodo n;
-    protected Frame fr;
+    protected Frame fr; 
     protected Lista L = new Lista();
 
     
@@ -53,12 +53,14 @@ public class Arbol {
         this.L = a;
     }
 
-    protected void crearAsignación(){
+
+
+    protected void crearAsignacion(){
 
         Stack<Nodo> Simbolos = new Stack<Nodo>(); 
         Stack<Lista> cantidades = new Stack<Lista>(); 
 
-        while(n.getToken() != 125){
+        while(n.getToken() != 125){ //;
 
             if(n.getToken() == 100 || n.getToken() == 101 || n.getToken() == 102 || n.getToken() == 122 || 
                n.getToken() == 210 ||  n.getToken() == 211){
@@ -173,6 +175,7 @@ public class Arbol {
         L = cantidades.peek();
         L.setR(r); 
 
+        L.imprimirPostorden(L);
         L.SemanticaPostOrden(L);
 
         
@@ -261,7 +264,11 @@ public class Arbol {
             case 110: 
             case 111:
             case 112: 
-            case 113: 
+            case 113:
+                return 2;
+            case 114:
+            case 115:
+                return 1;
             default: 
                 return 0; 
         }
@@ -450,6 +457,7 @@ class Lista {
                }
         }
     }
+    
     protected int TablaTipos(int op, int d1, int d2)
     {
         
